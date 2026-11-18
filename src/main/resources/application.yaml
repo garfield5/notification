@@ -1,0 +1,24 @@
+server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/notifications}
+    username: ${DB_USER:notifications}
+    password: ${DB_PASSWORD:notifications}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    admin:
+      fail-fast: true
+    producer:
+      acks: all
+      properties:
+        max.block.ms: 5000
+    consumer:
+      group-id: notification-workers
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    listener:
+      ack-mode: record
+      concurrency: 3
+notifications:
+  topic: notification-dispatch
